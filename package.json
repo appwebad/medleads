@@ -1,0 +1,6 @@
+{
+  "name":"medlead-backend",
+  "scripts":{
+    "dev":"node app.js"
+  }
+}
