@@ -1,17 +1,34 @@
 {
-  "name": "medlead-pernambuco",
+  "name": "web",
   "private": true,
-  "version": "1.0.0",
-  "workspaces": [
-    "apps/*"
-  ],
   "scripts": {
-    "dev": "concurrently \"npm run dev -w apps/web\" \"npm run dev -w apps/api\"",
-    "build": "npm run build -w apps/web && npm run build -w apps/api",
-    "start": "concurrently \"npm run start -w apps/web\" \"npm run start -w apps/api\"",
-    "lint": "npm run lint -w apps/web"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@supabase/supabase-js": "^2.49.8",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "framer-motion": "^11.11.10",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.469.0",
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.53.1",
+    "react-hot-toast": "^2.4.1",
+    "react-leaflet": "^5.0.0",
+    "recharts": "^2.13.0",
+    "tailwind-merge": "^2.5.3",
+    "xlsx": "^0.18.5",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "concurrently": "^9.0.1"
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14"
   }
 }
