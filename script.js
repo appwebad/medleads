@@ -1,132 +1,34 @@
-const leads = [
-  {
-    nome: "Dr João Silva",
-    especialidade: "Cardiologista",
-    telefone: "(81) 99999-9999",
-    cidade: "Recife",
-    status: "Novo",
-  },
-
-  {
-    nome: "Dra Maria Souza",
-    especialidade: "Dermatologista",
-    telefone: "(81) 98888-8888",
-    cidade: "Olinda",
-    status: "Em análise",
-  },
-
-  {
-    nome: "Dr Carlos Lima",
-    especialidade: "Ortopedista",
-    telefone: "(81) 97777-7777",
-    cidade: "Jaboatão",
-    status: "Fechado",
-  },
+// Atualize seu objeto de leads para incluir e-mail
+let leads = [
+  { id: 1, nome: "Dr João Silva", email: "joao@email.com", cidade: "Recife", status: "Novo" },
 ];
 
-const tableBody = document.getElementById("tableBody");
-
 function renderTable(data) {
-
   tableBody.innerHTML = "";
-
-  data.forEach((lead) => {
-
+  data.forEach((lead, index) => {
     const row = document.createElement("tr");
+    
+    // Link para compor e-mail no Gmail
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${lead.email}&su=Contato MedLead&body=Olá ${lead.nome},`;
 
     row.innerHTML = `
       <td>${lead.nome}</td>
-      <td>${lead.especialidade}</td>
-      <td>${lead.telefone}</td>
-      <td>${lead.cidade}</td>
-      <td>${lead.status}</td>
+      <td>
+        <small>${lead.email}</small><br>
+        <small style="color: #999">${lead.cidade}</small>
+      </td>
+      <td><span class="status-badge status-${lead.status.toLowerCase()}">${lead.status}</span></td>
+      <td>
+        <a href="${gmailUrl}" target="_blank" class="btn-action btn-email" title="Enviar E-mail">📧</a>
+        <button class="btn-action btn-approve" onclick="approveLead(${index})">✓</button>
+        <button class="btn-action btn-delete" onclick="deleteLead(${index})">✕</button>
+      </td>
     `;
-
     tableBody.appendChild(row);
-
   });
-
+  updateStats();
+  updateChart();
 }
 
-renderTable(leads);
-
-/* SEARCH */
-
-const searchInput = document.getElementById("searchInput");
-
-searchInput.addEventListener("keyup", () => {
-
-  const value = searchInput.value.toLowerCase();
-
-  const filtered = leads.filter((lead) =>
-    lead.nome.toLowerCase().includes(value)
-  );
-
-  renderTable(filtered);
-
-});
-
-/* BUTTON */
-
-const buscarLeads = document.getElementById("buscarLeads");
-
-buscarLeads.addEventListener("click", () => {
-
-  alert("Sistema conectado ao Google Places API.");
-
-});
-
-/* CHART */
-
-const ctx = document.getElementById("leadsChart");
-
-new Chart(ctx, {
-
-  type: "bar",
-
-  data: {
-
-    labels: ["Recife", "Olinda", "Jaboatão"],
-
-    datasets: [
-      {
-        label: "Leads",
-        data: [120, 90, 70],
-      },
-    ],
-
-  },
-
-  options: {
-
-    responsive: true,
-
-    plugins: {
-
-      legend: {
-        labels: {
-          color: "white",
-        },
-      },
-
-    },
-
-    scales: {
-
-      y: {
-        ticks: {
-          color: "white",
-        },
-      },
-
-      x: {
-        ticks: {
-          color: "white",
-        },
-      },
-
-    },
-
-  },
-
-});
+// No evento de Submit do formulário, não esqueça de capturar o e-mail:
+// const email = document.getElementById("emailLead").value;
