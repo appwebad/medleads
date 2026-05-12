@@ -1,137 +1,138 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>MedLead Pernambuco</title>
-
+  <title>MedLead Pernambuco | CRM Médico</title>
+  
+  <!-- CSS Externo -->
   <link rel="stylesheet" href="style.css" />
-
+  
+  <!-- Chart.js para os Gráficos -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
 
   <div class="layout">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
-
       <div class="logo">
         <h1>MedLead</h1>
         <span>Pernambuco</span>
       </div>
 
       <nav class="menu">
-        <a href="#">Dashboard</a>
+        <a href="#" class="active">Dashboard</a>
         <a href="#">Leads</a>
         <a href="#">CRM</a>
         <a href="#">Relatórios</a>
         <a href="#">Configurações</a>
       </nav>
-
     </aside>
 
-    <!-- MAIN -->
+    <!-- MAIN CONTENT -->
     <main class="main">
-
+      
       <!-- HEADER -->
       <header class="header">
-
         <div>
           <h2>Dashboard CRM Médico</h2>
-          <p>Captação Inteligente de Leads Médicos</p>
+          <p>Captação Inteligente de Leads</p>
         </div>
-
-        <button class="btn-primary" id="buscarLeads">
-          Buscar Leads
-        </button>
-
+        <button class="btn-primary" onclick="openModal()">+ Cadastrar Lead</button>
       </header>
 
-      <!-- CARDS -->
+      <!-- CARDS DE RESUMO -->
       <section class="cards">
-
         <div class="card">
           <span>Total Leads</span>
-          <h3>1245</h3>
+          <h3 id="stat-total">0</h3>
         </div>
-
         <div class="card">
           <span>Novos</span>
-          <h3>312</h3>
+          <h3 id="stat-novos">0</h3>
         </div>
-
         <div class="card">
-          <span>Em Análise</span>
-          <h3>94</h3>
+          <span>Aprovados</span>
+          <h3 id="stat-aprovados">0</h3>
         </div>
-
-        <div class="card">
-          <span>Fechados</span>
-          <h3>52</h3>
-        </div>
-
       </section>
 
-      <!-- GRID -->
+      <!-- GRID PRINCIPAL (GRÁFICO E TABELA) -->
       <section class="content-grid">
-
-        <!-- CHART -->
+        
+        <!-- BOX DO GRÁFICO -->
         <div class="box">
-
           <div class="box-header">
             <h3>Leads por Cidade</h3>
           </div>
-
           <canvas id="leadsChart"></canvas>
-
         </div>
 
-        <!-- TABLE -->
+        <!-- BOX DA TABELA -->
         <div class="box">
-
           <div class="box-header">
-
-            <h3>Leads Médicos</h3>
-
-            <input type="text" id="searchInput" placeholder="Buscar lead..." />
-
+            <h3>Lista de Leads</h3>
+            <input type="text" id="searchInput" placeholder="Buscar por nome..." />
           </div>
 
           <div class="table-container">
-
             <table>
-
               <thead>
                 <tr>
                   <th>Nome</th>
-                  <th>Especialidade</th>
-                  <th>Telefone</th>
-                  <th>Cidade</th>
+                  <th>Contato</th>
                   <th>Status</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
-
               <tbody id="tableBody">
+                <!-- Inserido via JavaScript -->
               </tbody>
-
             </table>
-
           </div>
-
         </div>
 
       </section>
-
     </main>
-
   </div>
 
+  <!-- MODAL DE CADASTRO -->
+  <div id="modalLead" class="modal">
+    <div class="modal-content">
+      <h3>Cadastrar Novo Lead</h3>
+      <form id="leadForm">
+        <input type="text" id="nome" placeholder="Nome do Médico" required>
+        <input type="text" id="especialidade" placeholder="Especialidade" required>
+        <input type="text" id="telefone" placeholder="Telefone" required>
+        <!-- Novo campo de E-mail adicionado -->
+        <input type="email" id="emailLead" placeholder="E-mail do Médico" required>
+        
+        <select id="cidade">
+          <option value="" disabled selected>Selecione a Cidade</option>
+          <option value="Recife">Recife</option>
+          <option value="Olinda">Olinda</option>
+          <option value="Jaboatão">Jaboatão</option>
+          <option value="Caruaru">Caruaru</option>
+        </select>
+
+        <div class="modal-buttons">
+          <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar Lead</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- BOTÃO FLUTUANTE DE SUPORTE -->
+  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=consultoriathayanavilaca@gmail.com" 
+     target="_blank" class="btn-support">
+     📩 Falar com Admin
+  </a>
+
+  <!-- Scripts -->
   <script src="script.js"></script>
 
 </body>
-
 </html>
