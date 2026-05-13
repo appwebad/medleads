@@ -1,34 +1,78 @@
-// Atualize seu objeto de leads para incluir e-mail
 let leads = [
-  { id: 1, nome: "Dr João Silva", email: "joao@email.com", cidade: "Recife", status: "Novo" },
+    { nome: "Dr João Silva", especialidade: "Cardiologista", telefone: "(81) 99999-9999", cidade: "Recife", email: "joao@med.com", status: "Novo" },
+    { nome: "Dra Maria Souza", especialidade: "Dermatologista", telefone: "(81) 98888-8888", cidade: "Olinda", email: "maria@med.com", status: "Aprovado" }
 ];
 
-function renderTable(data) {
-  tableBody.innerHTML = "";
-  data.forEach((lead, index) => {
-    const row = document.createElement("tr");
-    
-    // Link para compor e-mail no Gmail
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${lead.email}&su=Contato MedLead&body=Olá ${lead.nome},`;
+let chart;
 
-    row.innerHTML = `
-      <td>${lead.nome}</td>
-      <td>
-        <small>${lead.email}</small><br>
-        <small style="color: #999">${lead.cidade}</small>
-      </td>
-      <td><span class="status-badge status-${lead.status.toLowerCase()}">${lead.status}</span></td>
-      <td>
-        <a href="${gmailUrl}" target="_blank" class="btn-action btn-email" title="Enviar E-mail">📧</a>
-        <button class="btn-action btn-approve" onclick="approveLead(${index})">✓</button>
-        <button class="btn-action btn-delete" onclick="deleteLead(${index})">✕</button>
-      </td>
-    `;
-    tableBody.appendChild(row);
-  });
-  updateStats();
-  updateChart();
+// Iniciar app
+window.onload = () => {
+    renderTable(leads);
+    initChart();
+};
+
+function renderTable(data) {
+    const tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = "";
+
+    data.forEach((lead, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td><strong>${lead.nome}</strong><br><small>${lead.especialidade}</small></td>
+            <td>${lead.cidade}<br><small>${lead.email}</small></td>
+            <td><span style="color: ${lead.status === 'Aprovado' ? '#22c55e' : '#3b82f6'}">${lead.status}</span></td>
+            <td>
+                <button onclick="deleteLead(${index})" style="background:none; border:none; color:#ef4444; cursor:pointer">Excluir</button>
+                <button onclick="approveLead(${index})" style="background:none; border:none; color:#22c55e; cursor:pointer; margin-left:10px">Aprovar</button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    updateStats();
+    if(chart) updateChart();
 }
 
-// No evento de Submit do formulário, não esqueça de capturar o e-mail:
-// const email = document.getElementById("emailLead").value;
+// Funções do Modal
+function openModal() { document.getElementById("modalLead").style.display = "block"; }
+function closeModal() { document.getElementById("modalLead").style.display = "none"; }
+
+// Salvar Lead
+document.getElementById("leadForm").onsubmit = (e) => {
+    e.preventDefault();
+    const newLead = {
+        nome: document.getElementById("nome").value,
+        especialidade: document.getElementById("especialidade").value,
+        telefone: document.getElementById("telefone").value,
+        email: document.getElementById("emailLead").value,
+        cidade: document.getElementById("cidade").value,
+        status: "Novo"
+    };
+
+    leads.push(newLead);
+    renderTable(leads);
+    closeModal();
+    e.target.reset();
+};
+
+function updateStats() {
+    document.getElementById("stat-total").innerText = leads.length;
+    document.getElementById("stat-novos").innerText = leads.filter(l => l.status === "Novo").length;
+    document.getElementById("stat-aprovados").innerText = leads.filter(l => l.status === "Aprovado").length;
+}
+
+function initChart() {
+    const ctx = document.getElementById('leadsChart').getContext('2d');
+    chart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: ['Recife', 'Olinda', 'Jaboatão'], datasets: [{ label: 'Leads', data: [0,0,0], backgroundColor: '#d4af37' }] },
+        options: { scales: { y: { ticks: { color: '#fff' } }, x: { ticks: { color: '#fff' } } } }
+    });
+    updateChart();
+}
+
+function updateChart() {
+    const counts = ['Recife', 'Olinda', 'Jaboatão'].map(c => leads.filter(l => l.cidade === c).length);
+    chart.data.datasets[0].data = counts;
+    chart.update();
+}
