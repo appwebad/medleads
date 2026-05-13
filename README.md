@@ -1,15 +1,2 @@
 # MedLead Pernambuco
-
-## Instalação Frontend
-cd frontend
-npm install
-npm run dev
-
-## Instalação Backend
-cd backend
-npm install
-npm run dev
-
-## Deploy
-Frontend: Vercel
-Backend: Railway
+<img width="1600" height="1160" alt="image" src="https://github.com/user-attachments/assets/fed04bbd-8344-4f43-baa6-f26a0743b431" />
